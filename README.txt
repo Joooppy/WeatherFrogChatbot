@@ -1,7 +1,7 @@
 Welcome to the WeatherFrog Chatbot by Joop Timm.
 
 
-The chatbot predictest the weather for up to 4 days into the future and can predict the weather for all major city.
+The chatbot predicts the weather for up to 4 days into the future and can predict the weather for all major city.
 
 It is built with the Rasa CALM Framework and additionally powered by GPT-3.5-Turbo as a LLM Command Generator.
 
