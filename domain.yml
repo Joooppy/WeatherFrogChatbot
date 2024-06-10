@@ -1,0 +1,94 @@
+version: "3.1"
+
+slots:
+  location:
+    type: text
+
+  weather_time:
+    type: any
+    mappings:
+      - type: from_entity
+        entity: weather_date
+        default_value: "today"
+  
+  request_type:
+    type: categorical
+    influence_conversation: true
+    values:
+      - cloudiness
+      - feels_like
+      - humidity
+      - rainfall
+      - rainy
+      - snowfall
+      - snowy
+      - sunshine
+      - temperature
+      - wind_speed
+
+
+actions:
+  - action_get_weather
+  - utter_welcome
+  - utter_goodbye
+  - utter_bot_challenge
+  - utter_bot_info
+  - utter_author_info
+  - utter_redirect
+  - utter_weather_time
+
+intents:
+  - greeting
+  - goodbye
+  - welcome
+
+entities:
+  - place
+  - weather_date
+
+responses:
+  utter_welcome:
+    - text: "Welcome, I am WeatherFrog. I can provide you with information about the weather in all major cities."
+      metadata:
+        rephrase: True
+
+  utter_goodbye:
+    - text: "Thank you for chatting. Have a great day and see you next time!"
+      metadata:
+        rephrase: True
+    
+  utter_ask_location:
+    - text: "In which city do you want to know the weather?"
+      metadata:
+        rephrase: True
+
+  utter_bot_challenge:
+    - text: "Yes, I am a bot. People call me WeatherFrog. I am here to help you with the weather."
+      metadata:
+        rephrase: True
+
+  utter_bot_info:
+    - text: "I am WeatherFrog, a chatbot that provides you with information about the weather. I can provide current weather information for pretty much all bigger cities. I can also give more specific information such as temperature, cloudiness, apparent temperature, humidity, amount of rainfall, whether it is rainy, amount of snowfall and whether it is snowing. Just ask me whatever you want to know!"
+      metadata:
+        rephrase: False
+
+  utter_author_info:
+    - text: "I was created by the WeatherFrog team... namely Joop Timm. The chatbot is built with the Rasa CALM framework by Rasa Technologies GmbH. It is additionally powered by OpenWeatherMap API to request weather data and ChatGPT 3.5 Turbo by OpenAI for the LLM Command Generator."
+      metadata:
+        rephrase: False
+
+  utter_redirect:
+    - text: "Now, I am sure you prefer to to talk about the weather."
+      metadata:
+        rephrase: True
+  
+  utter_can_do_something_else:
+    - text: "Is there anything else you want to know?"
+      metadata:
+        rephrase: True
+        temperature: 1.3
+
+  utter_weather_time:
+    - text: "You want to know the weather for {weather_time}."
+      metadata:
+        rephrase: False

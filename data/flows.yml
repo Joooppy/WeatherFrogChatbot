@@ -1,0 +1,231 @@
+
+flows:
+  # non weather flows
+  welcome:
+    if: false
+    description: This flow welcomes the user when the user says hello.
+    steps:
+      - action: utter_welcome
+
+  say_goodbye:
+    description: This flow says goodbye to the user when the user says goodbye or does not want to chat anymore.
+    steps:
+      - action: utter_goodbye
+
+  bot_challenge:
+    description: This flow responds if the user wants to wether he is talking to a bot.
+    steps:
+      - action: utter_bot_challenge
+      - action: utter_redirect
+
+  ask_bot_information:
+    description: This flow tells some general information about the bot's functionality when the user asks for it.
+    steps:
+      - action: utter_bot_info
+      - action: utter_redirect
+
+  # flow to deal with user asking for author information
+  ask_author_information:
+    description: This flow tells some information about the author of the bot when the user asks for it.
+    steps:
+      - action: utter_author_info
+      - action: utter_redirect
+
+  pattern_completed:
+    description: Completion of a user's flow
+    steps:
+      - action: utter_can_do_something_else
+
+# general weather flow
+  weather:
+    description: This flow tells the weather in a location at a requested time by setting the weather_time slot using an api.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "What is the weather tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "What is the weather in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "What is the weather on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user says what is the weather like in one day in Berlin? the weather_time slot should be set to "tomorrow".
+         If the user says what is the weather like in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user says what is the weather like in 3 days in Berlin? the weather_time slot should be set to "in 3 days".
+      - collect: location
+      - action: action_get_weather
+
+# weather flows for specific information requests
+  cloudiness:
+    description: This flow tells wether it is cloudy in a location using an api when asked, by setting the request_type to the value cloudiness.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "Is it going to be cloudy tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "Are there clouds in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Are there going to be clouds on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks whether it will be cloudy in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks whether it will be cloudy in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks whether it will be cloudy in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks whether it will be cloudy in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  # weather flow for apparent temperature
+  feels_like:
+    description: This flow tells what the temperature feels like in a location using an api when asked, by setting the request_type to the value feels_like.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "What will the temperature feel like tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "What is the apparent temperature in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "How does the temperature feel like on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks how the temperature will feel like in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks how the temperature will feel like in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks what the apparent temperature will be in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks how the temperature feels like in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  humidity:
+    description: This flow tells the humidity in a location using an api when asked, by setting the request_type to the value humidity.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "How is the humidity tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "How humid is it in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Is there going to be a lot of humidity on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks whether it will be humid in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks whether it will be humid in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks whether it will be humid in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks whether it will be humid in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  rainfall:
+    description: This flow tells the amount of rainfall in a location using an api when asked, by setting the request_type to the value rainfall.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "How much rainfall will there be tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "How much rain is in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Is there going to be a lot of rain on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks how much rain there will be in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks how much rain there will be in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks how much rain there will be in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks how much rain there will be in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  rainy:
+    description: This flow tells wether it is raining in a location using an api when asked, by setting the request_type to the value rainy.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "Will it be rainy tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "Does it rain in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Will it rain on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks whether it will rain in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks whether it will rain in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks whether it will rain in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks whether it will rain in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  snowfall:
+    description: This flow tells the amount of snowfall in a location using an api when asked, by setting the request_type to the value snowfall.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "How much snowfall will there be tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "How much snow is in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Is there going to be a lot of snow on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks how much snow there will be in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks how much snow there will be in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks how much snow there will be in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks how much snow there will be in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  snowy:
+    description: This flow tells wether it is snowing in a location using an api when asked, by setting the request_type to the value snowy.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "Will it be snowy tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "Does it snow in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Will it snow on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks whether it snow rain in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks whether it snow rain in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks whether it snow rain in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks whether it snow rain in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  sunshine:
+    description: This flow weather there is sunshine in a location using an api when asked, by setting the request_type to the value sunshine.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "Will there be sunshine tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "Does the sun shine in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Will be sunny on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks whether it will the sun shine in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks whether it will it be sunny in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks whether it will it be sunny in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks whether it is going to be sunny in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  temperature:
+    description: This flow tells the temperature in a location using an api when asked, by setting the request_type to the value temperature.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "How much will the temperature be tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "How warm is it in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Will be cold on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks whether it will be warm in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks whether it will be cold in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks whether it will be warm sunny in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks whether it is going to be cold in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+  
+  windspeed:
+    description: This flow tells the wind speed in a location using an api when asked, by setting the request_type to the value wind_speed.
+    steps:
+      - collect: weather_time
+        description: Check the user message for a day or time entity and set the weather_time slot accordingly.
+         If there is no information set the weather_time slot value to "today"
+         For example, if the user says "How much wind will there be tomorrow in Berlin?" the weather_time slot should be set to "tomorrow".
+         If the User says "Is it windy in Berlin?" the weather_time slot should be set to "today".
+         If the user uses a date like "Is there going to be a lot of wind on the 25.12.2024 in Berlin?" the weather_time slot should be set to "25.12.2024".
+         If the user asks how much wind there will be in one day in Munich? the weather_time slot should be set to "tomorrow".
+         If the user asks will the be a storm in 2 days in Berlin? the weather_time slot should be set to "in 2 days".
+         If the user asks how much wind there will be in 3 days in London? the weather_time slot should be set to "in 3 days".
+         If the user asks how windy it is going to be in 4 days in Düsseldorf? the weather_time slot should be set to "in 4 days".
+      - collect: location
+      - collect: request_type
+      - action: action_get_weather
+
+  
+
+  
+
+
