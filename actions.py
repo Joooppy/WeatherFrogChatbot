@@ -49,7 +49,7 @@ class Weather(Action):
                 return []
         
         # compose api url from key and location and time requested
-        api_key = "16228074ed6a7ed6219527d88f4a0bd4"
+        api_key = "" # INSERT WEATHERMAP API KEY HERE!!!
         #skeleton = "http://api.openweathermap.org/data/2.5/weather?q={}&appid={}" # optional current weather api call
         skeleton = "http://api.openweathermap.org/data/2.5/forecast?q={}&appid={}" # api call for the forecast of the next 5 days in 3 hour intervals
         complete_url = skeleton.format(city, api_key)
